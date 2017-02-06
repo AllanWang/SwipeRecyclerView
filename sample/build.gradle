@@ -1,16 +1,25 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion project.targetSdk
+    buildToolsVersion project.buildTools
+
     defaultConfig {
         applicationId "ca.allanwang.fastrecyclerview"
-        minSdkVersion 14
-        targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion 16
+        targetSdkVersion project.targetSdk
+        versionCode project.versionCode
+        versionName project.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.outputFile = new File(output.outputFile.parent,
+                    "${project.appTag}Sample-v${variant.versionName}.apk")
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -24,7 +33,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.1.1'
     testCompile 'junit:junit:4.12'
     compile project (':fastrecyclerview')
+    compile 'ca.allanwang:capsule:v4.0'
 }
