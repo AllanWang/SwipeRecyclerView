@@ -152,6 +152,8 @@ public class SwipeRecyclerView extends FrameLayout implements SwipeRefreshBase.I
 
     /**
      * Define refresh complete and disabled behaviour
+     * Setting as null will produce the default behaviour of
+     * hiding the refresh spinner when completed
      *
      * @param callback onComplete and onFailure
      * @return this on refresh status
@@ -193,6 +195,11 @@ public class SwipeRecyclerView extends FrameLayout implements SwipeRefreshBase.I
         return mRecycler;
     }
 
+    /**
+     * Gets swipe refresh layout.
+     *
+     * @return the swipe refresh layout
+     */
     public SwipeRefreshLayout getSwipeRefreshLayout() {
         return mSwipe;
     }

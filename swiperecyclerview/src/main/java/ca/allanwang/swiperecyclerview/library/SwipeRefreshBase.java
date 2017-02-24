@@ -14,6 +14,11 @@ class SwipeRefreshBase extends SwipeRefreshLayout {
     private ISwipeRefresh mISwipe;
 
     interface ISwipeRefresh {
+        /**
+         * Dictates whether touch should be received & consumed
+         * @param ev MotionEvent triggered
+         * @return true to consume, false otherwise
+         */
         boolean shouldConsumeTouch(MotionEvent ev);
     }
 

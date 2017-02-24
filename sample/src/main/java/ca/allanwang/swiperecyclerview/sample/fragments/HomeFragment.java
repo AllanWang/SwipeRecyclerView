@@ -18,6 +18,8 @@ import java.util.Random;
 import ca.allanwang.capsule.library.event.CFabEvent;
 import ca.allanwang.capsule.library.fragments.CapsuleFragment;
 import ca.allanwang.swiperecyclerview.library.SwipeRecyclerView;
+import ca.allanwang.swiperecyclerview.library.adapters.FastAnimatedAdapter;
+import ca.allanwang.swiperecyclerview.library.animations.SlideUpFadeInAnimator;
 import ca.allanwang.swiperecyclerview.library.interfaces.ISwipeRecycler;
 import ca.allanwang.swiperecyclerview.sample.R;
 import ca.allanwang.swiperecyclerview.sample.items.CheckBoxItem;
@@ -44,7 +46,7 @@ public class HomeFragment extends CapsuleFragment implements ISwipeRecycler.OnRe
         View v = inflater.inflate(R.layout.swipe_recycler_view, container, false);
         SwipeRecyclerView frame = (SwipeRecyclerView) v.findViewById(R.id.swipe_recycler);
 
-        mAdapter = new FastItemAdapter<>();
+        mAdapter = new FastAnimatedAdapter<>(new SlideUpFadeInAnimator());
         mAdapter.withOnPreClickListener(new FastAdapter.OnClickListener<CheckBoxItem>() {
             @Override
             public boolean onClick(View v, IAdapter<CheckBoxItem> adapter, CheckBoxItem item, int position) {
