@@ -1,4 +1,4 @@
-package ca.allanwang.fastrecyclerview.sample;
+package ca.allanwang.swiperecyclerview.sample;
 
 import android.support.annotation.Nullable;
 

@@ -1,1 +1,1 @@
-include ':sample', ':fastrecyclerview'
+include ':sample', ':swiperecyclerview'
