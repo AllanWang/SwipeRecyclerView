@@ -6,18 +6,18 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
 
-import com.mikepenz.fastadapter.FastAdapter;
-
+import ca.allanwang.swiperecyclerview.library.animators.SlidingAnimator;
+import ca.allanwang.swiperecyclerview.library.interfaces.IScrolling;
 import ca.allanwang.swiperecyclerview.library.interfaces.ISwipeRecycler;
 import ca.allanwang.swiperecyclerview.library.logging.RLog;
+import ca.allanwang.swiperecyclerview.library.managers.SGridLayoutManager;
+import ca.allanwang.swiperecyclerview.library.managers.SLinearLayoutManager;
 
 /**
  * Created by Allan Wang on 2017-02-06.
@@ -111,15 +111,30 @@ public class SwipeRecyclerView extends FrameLayout implements SwipeRefreshBase.I
         return setRefreshing(false);
     }
 
+    public SwipeRecyclerView setItemAnimator(RecyclerView.ItemAnimator animator) {
+        mRecycler.setItemAnimator(animator);
+        mRecycler.setRecyclerListener(new RecyclerView.RecyclerListener() {
+            @Override
+            public void onViewRecycled(RecyclerView.ViewHolder holder) {
+
+            }
+        });
+        return this;
+    }
+
+    public SwipeRecyclerView setDefaultItemAnimator() {
+        return setItemAnimator(new SlidingAnimator());
+    }
+
     /**
      * Sets adapter and sets layout manager is not present.
      *
      * @param adapter the adapter
      * @return SRV
      */
-    public SwipeRecyclerView setAdapter(FastAdapter adapter) {
+    public SwipeRecyclerView setAdapter(RecyclerView.Adapter adapter) {
         if (mRecycler.getLayoutManager() == null)
-            mRecycler.setLayoutManager(new LinearLayoutManager(mContext));
+            mRecycler.setLayoutManager(new SLinearLayoutManager(mContext));
         mRecycler.setAdapter(adapter);
         return this;
     }
@@ -131,10 +146,26 @@ public class SwipeRecyclerView extends FrameLayout implements SwipeRefreshBase.I
      * @param columns the # of columns
      * @return SRV
      */
-    public SwipeRecyclerView setAdapter(FastAdapter adapter, int columns) {
-        if (columns == 1) mRecycler.setLayoutManager(new LinearLayoutManager(mContext));
-        else mRecycler.setLayoutManager(new GridLayoutManager(mContext, columns));
+    public SwipeRecyclerView setAdapter(RecyclerView.Adapter adapter, int columns) {
+        if (columns == 1) mRecycler.setLayoutManager(new SLinearLayoutManager(mContext));
+        else mRecycler.setLayoutManager(new SGridLayoutManager(mContext, columns));
         mRecycler.setAdapter(adapter);
+        return this;
+    }
+
+    public SwipeRecyclerView disableScrolling() {
+        return setScrollingEnabled(false);
+    }
+
+    public SwipeRecyclerView enableScrolling() {
+        return setScrollingEnabled(true);
+    }
+
+    public SwipeRecyclerView setScrollingEnabled(boolean flag) {
+        if (!(mRecycler.getLayoutManager() instanceof IScrolling))
+            RLog.e("Recycler Layout Manager does not have custom IScrolling toggle");
+        else
+            ((IScrolling) mRecycler.getLayoutManager()).setScrollEnabled(flag);
         return this;
     }
 

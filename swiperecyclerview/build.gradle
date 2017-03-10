@@ -33,4 +33,7 @@ dependencies {
     }
     compile 'com.mikepenz:fastadapter-commons:2.1.0@aar'
 
+    //Animator
+    compile 'jp.wasabeef:recyclerview-animators:2.2.5'
+
 }

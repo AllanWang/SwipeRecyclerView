@@ -18,8 +18,6 @@ import java.util.Random;
 import ca.allanwang.capsule.library.event.CFabEvent;
 import ca.allanwang.capsule.library.fragments.CapsuleFragment;
 import ca.allanwang.swiperecyclerview.library.SwipeRecyclerView;
-import ca.allanwang.swiperecyclerview.library.adapters.FastAnimatedAdapter;
-import ca.allanwang.swiperecyclerview.library.animations.SlideUpFadeInAnimator;
 import ca.allanwang.swiperecyclerview.library.interfaces.ISwipeRecycler;
 import ca.allanwang.swiperecyclerview.sample.R;
 import ca.allanwang.swiperecyclerview.sample.items.CheckBoxItem;
@@ -32,6 +30,7 @@ public class HomeFragment extends CapsuleFragment implements ISwipeRecycler.OnRe
     private static final String[] ALPHABET = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
     private FastItemAdapter<CheckBoxItem> mAdapter;
+    private SwipeRecyclerView mFrame;
 
     @Nullable
     @Override
@@ -44,9 +43,9 @@ public class HomeFragment extends CapsuleFragment implements ISwipeRecycler.OnRe
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.swipe_recycler_view, container, false);
-        SwipeRecyclerView frame = (SwipeRecyclerView) v.findViewById(R.id.swipe_recycler);
+        mFrame = (SwipeRecyclerView) v.findViewById(R.id.swipe_recycler);
 
-        mAdapter = new FastAnimatedAdapter<>(new SlideUpFadeInAnimator());
+        mAdapter = new FastItemAdapter<>();
         mAdapter.withOnPreClickListener(new FastAdapter.OnClickListener<CheckBoxItem>() {
             @Override
             public boolean onClick(View v, IAdapter<CheckBoxItem> adapter, CheckBoxItem item, int position) {
@@ -58,7 +57,7 @@ public class HomeFragment extends CapsuleFragment implements ISwipeRecycler.OnRe
 
         mAdapter.add(generateList());
 
-        frame.setAdapter(mAdapter).setOnRefreshListener(this);
+        mFrame.setAdapter(mAdapter).setOnRefreshListener(this).setDefaultItemAnimator();
         return v;
     }
 
