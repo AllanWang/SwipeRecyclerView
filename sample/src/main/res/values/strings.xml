@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">FastRecyclerView</string>
+    <string name="app_name">SwipeRecyclerView</string>
     <string name="home">Home</string>
 </resources>

@@ -3,7 +3,7 @@ package ca.allanwang.swiperecyclerview.library.animators;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 
 import jp.wasabeef.recyclerview.animators.BaseItemAnimator;
@@ -15,8 +15,11 @@ import jp.wasabeef.recyclerview.animators.BaseItemAnimator;
 
 public class SlidingAnimator extends BaseItemAnimator {
 
+    //animate from base; set true if holders are relatively big
+    private boolean fromBase = false;
+
     public SlidingAnimator() {
-        mInterpolator = new AccelerateDecelerateInterpolator();
+        mInterpolator = new DecelerateInterpolator();
         setTimings();
     }
 
@@ -26,17 +29,20 @@ public class SlidingAnimator extends BaseItemAnimator {
     }
 
     private void setTimings() {
-        setAddDuration(500);
+        setAddDuration(200);
         setRemoveDuration(200);
+    }
+
+    public SlidingAnimator setFromBase(boolean fromBase) {
+        if (this.fromBase != fromBase) {
+            this.fromBase = fromBase;
+            setAddDuration(fromBase ? 500 : 200);
+        }
+        return this;
     }
 
     @Override
     protected void animateRemoveImpl(final RecyclerView.ViewHolder holder) {
-//        Animation slideUp = AnimationUtils.loadAnimation();
-//        slideUp.setInterpolator(mInterpolator);
-
-//        holder.itemView.startAnimation(slideUp);
-
         ViewCompat.animate(holder.itemView)
                 .translationX(holder.itemView.getRootView().getWidth())
                 .alpha(0)
@@ -57,11 +63,27 @@ public class SlidingAnimator extends BaseItemAnimator {
         return Math.abs(holder.getAdapterPosition() * getAddDuration() / 10);
     }
 
+    /**
+     * Set sliding base
+     * If there are many holders that fit in the screen, do not slide from the bottom
+     *
+     * @param holder to animate
+     */
     @Override
     protected void preAnimateAddImpl(RecyclerView.ViewHolder holder) {
-        long displacement = (long) Math.max(holder.itemView.getHeight(), ((View) holder.itemView.getParent()).getHeight() - holder.itemView.getY());
-        ViewCompat.setTranslationY(holder.itemView, displacement);
+        if (fromBase) slideInFromBase(holder);
+        else fadeSlideIn(holder);
+    }
+
+    private void fadeSlideIn(RecyclerView.ViewHolder holder) {
+        ViewCompat.setTranslationY(holder.itemView, holder.itemView.getHeight() * 2);
         ViewCompat.setAlpha(holder.itemView, 0);
+    }
+
+    private void slideInFromBase(RecyclerView.ViewHolder holder) {
+        long displacement = (long) Math.max(holder.itemView.getHeight(),
+                ((View) holder.itemView.getParent()).getHeight() - holder.itemView.getY());
+        ViewCompat.setTranslationY(holder.itemView, displacement);
     }
 
     @Override
