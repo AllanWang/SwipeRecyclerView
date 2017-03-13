@@ -2,6 +2,7 @@ package ca.allanwang.swiperecyclerview.library;
 
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -10,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import ca.allanwang.swiperecyclerview.library.animators.SlidingAnimator;
@@ -66,6 +68,10 @@ public class SwipeRecyclerView extends FrameLayout implements SwipeRefreshBase.I
         init(context);
     }
 
+    public static SwipeRecyclerView hook(View view, @IdRes int id) {
+        return (SwipeRecyclerView) view.findViewById(id);
+    }
+
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     public SwipeRecyclerView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
@@ -113,12 +119,12 @@ public class SwipeRecyclerView extends FrameLayout implements SwipeRefreshBase.I
 
     public SwipeRecyclerView setItemAnimator(RecyclerView.ItemAnimator animator) {
         mRecycler.setItemAnimator(animator);
-        mRecycler.setRecyclerListener(new RecyclerView.RecyclerListener() {
-            @Override
-            public void onViewRecycled(RecyclerView.ViewHolder holder) {
-
-            }
-        });
+//        mRecycler.setRecyclerListener(new RecyclerView.RecyclerListener() {
+//            @Override
+//            public void onViewRecycled(RecyclerView.ViewHolder holder) {
+//
+//            }
+//        });
         return this;
     }
 
@@ -182,11 +188,11 @@ public class SwipeRecyclerView extends FrameLayout implements SwipeRefreshBase.I
     }
 
     /**
-     * Define refresh complete and disabled behaviour
+     * Define refresh success and failure behaviour
      * Setting as null will produce the default behaviour of
      * hiding the refresh spinner when completed
      *
-     * @param callback onComplete and onFailure
+     * @param callback onSuccess and onFailure
      * @return this on refresh status
      */
     public SwipeRecyclerView setOnRefreshStatus(@Nullable ISwipeRecycler.OnRefreshStatus callback) {

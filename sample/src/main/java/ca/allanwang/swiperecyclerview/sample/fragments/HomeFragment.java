@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IAdapter;
-import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +17,8 @@ import java.util.Random;
 import ca.allanwang.capsule.library.event.CFabEvent;
 import ca.allanwang.capsule.library.fragments.CapsuleFragment;
 import ca.allanwang.swiperecyclerview.library.SwipeRecyclerView;
+import ca.allanwang.swiperecyclerview.library.adapters.AnimationAdapter;
+import ca.allanwang.swiperecyclerview.library.animators.SlidingAnimator;
 import ca.allanwang.swiperecyclerview.library.interfaces.ISwipeRecycler;
 import ca.allanwang.swiperecyclerview.sample.R;
 import ca.allanwang.swiperecyclerview.sample.items.CheckBoxItem;
@@ -29,8 +30,7 @@ import ca.allanwang.swiperecyclerview.sample.items.CheckBoxItem;
 public class HomeFragment extends CapsuleFragment implements ISwipeRecycler.OnRefreshListener {
     private static final String[] ALPHABET = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
-    private FastItemAdapter<CheckBoxItem> mAdapter;
-    private SwipeRecyclerView mFrame;
+    private AnimationAdapter<CheckBoxItem> mAdapter;
 
     @Nullable
     @Override
@@ -43,9 +43,8 @@ public class HomeFragment extends CapsuleFragment implements ISwipeRecycler.OnRe
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.swipe_recycler_view, container, false);
-        mFrame = (SwipeRecyclerView) v.findViewById(R.id.swipe_recycler);
 
-        mAdapter = new FastItemAdapter<>();
+        mAdapter = new AnimationAdapter<>();
         mAdapter.withOnPreClickListener(new FastAdapter.OnClickListener<CheckBoxItem>() {
             @Override
             public boolean onClick(View v, IAdapter<CheckBoxItem> adapter, CheckBoxItem item, int position) {
@@ -57,7 +56,10 @@ public class HomeFragment extends CapsuleFragment implements ISwipeRecycler.OnRe
 
         mAdapter.add(generateList());
 
-        mFrame.setAdapter(mAdapter).setOnRefreshListener(this).setDefaultItemAnimator();
+        SwipeRecyclerView.hook(v, R.id.swipe_recycler)
+                .setAdapter(mAdapter)
+                .setOnRefreshListener(this)
+                .setItemAnimator(new SlidingAnimator().setFromBase(true));
         return v;
     }
 
@@ -65,11 +67,9 @@ public class HomeFragment extends CapsuleFragment implements ISwipeRecycler.OnRe
         int x = 0;
         List<CheckBoxItem> items = new ArrayList<>();
         for (String s : ALPHABET) {
-            int count = new Random().nextInt(20);
-            for (int i = 1; i <= count; i++) {
+            int count = new Random().nextInt(64);
+            for (int i = 1; i <= count; i++, x++)
                 items.add(new CheckBoxItem().withName(s + " Test " + x).withIdentifier(100 + x));
-                x++;
-            }
         }
         return items;
     }
@@ -88,6 +88,6 @@ public class HomeFragment extends CapsuleFragment implements ISwipeRecycler.OnRe
                 mAdapter.add(generateList());
                 statusEmitter.onSuccess();
             }
-        }, 2000);
+        }, 1000);
     }
 }

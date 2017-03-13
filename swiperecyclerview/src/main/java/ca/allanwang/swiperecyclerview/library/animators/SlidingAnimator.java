@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 
+import ca.allanwang.swiperecyclerview.library.interfaces.IItemAnimatorExtension;
 import ca.allanwang.swiperecyclerview.library.wasabeef.animators.BaseItemAnimator;
 
 
@@ -14,13 +15,13 @@ import ca.allanwang.swiperecyclerview.library.wasabeef.animators.BaseItemAnimato
  * Sliding Animator; enter up, exit right, with fading for both
  */
 
-public class SlidingAnimator extends BaseItemAnimator {
+public class SlidingAnimator extends BaseItemAnimator implements IItemAnimatorExtension {
 
     public static final float SLOW = 1.5f, NORMAL = 1.0f, FAST = 0.5f;
     private float multiplier;
 
     //animate from base; set true if holders are relatively big
-    private boolean fromBase = false;
+    private boolean fromBase = false, allowFromBase = false;
 
     public SlidingAnimator() {
         mInterpolator = new DecelerateInterpolator();
@@ -38,11 +39,22 @@ public class SlidingAnimator extends BaseItemAnimator {
         setRemoveDuration((long) (300 * multiplier));
     }
 
+    /**
+     * Allow animation from base of adapter if it is the last child
+     *
+     * @param fromBase true to allow
+     * @return this
+     */
     public SlidingAnimator setFromBase(boolean fromBase) {
-        if (this.fromBase != fromBase) {
-            this.fromBase = fromBase;
-            setAddDuration((long) ((fromBase ? 500 : 200) * multiplier));
-        }
+        return setFromBase(fromBase, true);
+    }
+
+    private SlidingAnimator setFromBase(Boolean fromBase, boolean allowFromBase) {
+        if ((fromBase == null || this.fromBase == fromBase) && this.allowFromBase == allowFromBase)
+            return this;
+        this.allowFromBase = allowFromBase;
+        if (fromBase != null) this.fromBase = fromBase;
+        setAddDuration((long) ((this.fromBase && allowFromBase ? 500 : 300) * multiplier));
         return this;
     }
 
@@ -76,7 +88,7 @@ public class SlidingAnimator extends BaseItemAnimator {
      */
     @Override
     protected void preAnimateAddImpl(RecyclerView.ViewHolder holder) {
-        if (fromBase) slideInFromBase(holder);
+        if (fromBase && allowFromBase) slideInFromBase(holder);
         else fadeSlideIn(holder);
     }
 
@@ -101,5 +113,10 @@ public class SlidingAnimator extends BaseItemAnimator {
                 .setListener(new DefaultAddVpaListener(holder))
                 .setStartDelay(getAddDelay(holder))
                 .start();
+    }
+
+    @Override
+    public void triggerAdd(boolean toTop, boolean toBottom, boolean isEmpty) {
+        setFromBase(null, toBottom);
     }
 }

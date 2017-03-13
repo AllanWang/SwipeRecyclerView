@@ -1,66 +1,56 @@
 package ca.allanwang.swiperecyclerview.library.adapters;
 
 import android.animation.Animator;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 
+import com.mikepenz.fastadapter.IItem;
+import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter;
+
+import java.util.List;
+
 import ca.allanwang.swiperecyclerview.library.interfaces.IAdapterAnimator;
+import ca.allanwang.swiperecyclerview.library.interfaces.IItemAnimatorExtension;
 import ca.allanwang.swiperecyclerview.library.wasabeef.internal.ViewHelper;
 
 /**
  * Created by Allan Wang on 2017-03-09.
  */
 
-public abstract class AnimationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AnimationAdapter<Item extends IItem> extends FastItemAdapter<Item> {
 
-    private RecyclerView.Adapter<RecyclerView.ViewHolder> mAdapter;
     private int mDuration = 300;
     private Interpolator mInterpolator = new LinearInterpolator();
     private int mLastPosition = -1;
     private IAdapterAnimator mAnimator;
+    private RecyclerView mRecyclerView;
 
     private boolean isFirstOnly;
 
-    public AnimationAdapter(RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
-        mAdapter = adapter;
+    public AnimationAdapter() {
+        super();
         init();
     }
 
-    public AnimationAdapter(RecyclerView.Adapter<RecyclerView.ViewHolder> adapter, IAdapterAnimator animator) {
-        mAdapter = adapter;
+    public AnimationAdapter(IAdapterAnimator animator) {
+        super();
         mAnimator = animator;
         init();
     }
 
+
     private void init() {
-        isFirstOnly = mAnimator.isFirstOnly();
-        mDuration = mAnimator.getDuration();
-        mInterpolator = mAnimator.getInterpolator();
+        setAnimator(mAnimator);
     }
 
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return mAdapter.onCreateViewHolder(parent, viewType);
-    }
-
-    @Override
-    public void registerAdapterDataObserver(RecyclerView.AdapterDataObserver observer) {
-        super.registerAdapterDataObserver(observer);
-        mAdapter.registerAdapterDataObserver(observer);
-    }
-
-    @Override
-    public void unregisterAdapterDataObserver(RecyclerView.AdapterDataObserver observer) {
-        super.unregisterAdapterDataObserver(observer);
-        mAdapter.unregisterAdapterDataObserver(observer);
-    }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        mAdapter.onBindViewHolder(holder, position);
+        super.onBindViewHolder(holder, position);
 
         int adapterPosition = holder.getAdapterPosition();
         if (!isFirstOnly || adapterPosition > mLastPosition) {
@@ -72,17 +62,6 @@ public abstract class AnimationAdapter extends RecyclerView.Adapter<RecyclerView
         } else {
             ViewHelper.clear(holder.itemView);
         }
-    }
-
-    @Override
-    public void onViewRecycled(RecyclerView.ViewHolder holder) {
-        mAdapter.onViewRecycled(holder);
-        super.onViewRecycled(holder);
-    }
-
-    @Override
-    public int getItemCount() {
-        return mAdapter.getItemCount();
     }
 
     public void setDuration(int duration) {
@@ -97,23 +76,91 @@ public abstract class AnimationAdapter extends RecyclerView.Adapter<RecyclerView
         mLastPosition = start;
     }
 
-    protected abstract Animator[] getAnimators(View view, int flag);
-
     public void setFirstOnly(boolean firstOnly) {
         isFirstOnly = firstOnly;
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return mAdapter.getItemViewType(position);
+    public void setAnimator(@Nullable IAdapterAnimator animator) {
+        mAnimator = animator;
+        if (mAnimator == null) {
+            //set default animations (none)
+            mAnimator = new IAdapterAnimator() {
+                @Override
+                public boolean isFirstOnly() {
+                    return false;
+                }
+
+                @Override
+                public int getDuration() {
+                    return 0;
+                }
+
+                @NonNull
+                @Override
+                public Interpolator getInterpolator() {
+                    return new LinearInterpolator();
+                }
+
+                @NonNull
+                @Override
+                public Animator[] getAnimators(View view, boolean isEmpty) {
+                    return new Animator[0];
+                }
+            };
+        }
+        isFirstOnly = mAnimator.isFirstOnly();
+        mDuration = mAnimator.getDuration();
+        mInterpolator = mAnimator.getInterpolator();
     }
 
-    public RecyclerView.Adapter<RecyclerView.ViewHolder> getWrappedAdapter() {
-        return mAdapter;
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        mRecyclerView = recyclerView;
     }
 
     @Override
-    public long getItemId(int position) {
-        return mAdapter.getItemId(position);
+    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+        mRecyclerView = null;
+    }
+
+    /*
+     * override add functions
+     */
+
+    private void trigger(int position) {
+        if (mRecyclerView == null) return;
+        RecyclerView.ItemAnimator itemAnimator = mRecyclerView.getItemAnimator();
+        if (itemAnimator instanceof IItemAnimatorExtension)
+            ((IItemAnimatorExtension) itemAnimator).triggerAdd(position == 0, position >= getItemCount(), getItemCount() == 0);
+    }
+
+    @Override
+    public AnimationAdapter<Item> add(List<Item> items) {
+        trigger(getItemCount());
+        super.add(items);
+        return this;
+    }
+
+    @Override
+    public AnimationAdapter<Item> add(Item item) {
+        trigger(getItemCount());
+        super.add(item);
+        return this;
+    }
+
+    @Override
+    public FastItemAdapter<Item> add(int position, List<Item> items) {
+        trigger(position);
+        super.add(position, items);
+        return this;
+    }
+
+    @Override
+    public FastItemAdapter<Item> add(int position, Item item) {
+        trigger(position);
+        super.add(position, item);
+        return this;
     }
 }
