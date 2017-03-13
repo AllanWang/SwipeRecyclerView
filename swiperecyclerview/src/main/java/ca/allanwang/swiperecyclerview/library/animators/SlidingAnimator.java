@@ -6,7 +6,8 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 
-import jp.wasabeef.recyclerview.animators.BaseItemAnimator;
+import ca.allanwang.swiperecyclerview.library.wasabeef.animators.BaseItemAnimator;
+
 
 /**
  * Created by Allan Wang on 2017-03-09.
@@ -64,7 +65,7 @@ public class SlidingAnimator extends BaseItemAnimator {
 
     @Override
     protected long getAddDelay(final RecyclerView.ViewHolder holder) {
-        return Math.abs(holder.getAdapterPosition() * getAddDuration() / 10);
+        return Math.max(holder.getAdapterPosition() * getAddDuration() / 10, 0);
     }
 
     /**

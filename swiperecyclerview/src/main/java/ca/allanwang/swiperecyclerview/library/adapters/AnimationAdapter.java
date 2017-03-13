@@ -8,7 +8,7 @@ import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 
 import ca.allanwang.swiperecyclerview.library.interfaces.IAdapterAnimator;
-import jp.wasabeef.recyclerview.internal.ViewHelper;
+import ca.allanwang.swiperecyclerview.library.wasabeef.internal.ViewHelper;
 
 /**
  * Created by Allan Wang on 2017-03-09.

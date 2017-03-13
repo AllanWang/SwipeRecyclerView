@@ -1,4 +1,4 @@
-package jp.wasabeef.recyclerview.animators;
+package ca.allanwang.swiperecyclerview.library.wasabeef.animators;
 /*
  * Copyright (C) 2015 Wasabeef
  * Copyright (C) 2014 The Android Open Source Project
@@ -29,8 +29,8 @@ import android.view.animation.LinearInterpolator;
 import java.util.ArrayList;
 import java.util.List;
 
-import jp.wasabeef.recyclerview.animators.holder.AnimateViewHolder;
-import jp.wasabeef.recyclerview.internal.ViewHelper;
+import ca.allanwang.swiperecyclerview.library.wasabeef.animators.holder.AnimateViewHolder;
+import ca.allanwang.swiperecyclerview.library.wasabeef.internal.ViewHelper;
 
 public abstract class BaseItemAnimator extends SimpleItemAnimator {
 

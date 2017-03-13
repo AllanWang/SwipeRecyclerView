@@ -1,4 +1,4 @@
-package jp.wasabeef.recyclerview.internal;
+package ca.allanwang.swiperecyclerview.library.wasabeef.internal;
 
 import android.support.v4.view.ViewCompat;
 import android.view.View;

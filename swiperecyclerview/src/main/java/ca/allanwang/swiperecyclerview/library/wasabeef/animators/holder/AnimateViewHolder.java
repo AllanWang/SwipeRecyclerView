@@ -1,4 +1,4 @@
-package jp.wasabeef.recyclerview.animators.holder;
+package ca.allanwang.swiperecyclerview.library.wasabeef.animators.holder;
 
 import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v7.widget.RecyclerView;

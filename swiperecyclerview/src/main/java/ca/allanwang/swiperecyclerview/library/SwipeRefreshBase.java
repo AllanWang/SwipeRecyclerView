@@ -9,13 +9,14 @@ import android.view.MotionEvent;
  * Created by Allan Wang on 2017-02-23.
  */
 
-class SwipeRefreshBase extends SwipeRefreshLayout {
+public class SwipeRefreshBase extends SwipeRefreshLayout {
 
     private ISwipeRefresh mISwipe;
 
     interface ISwipeRefresh {
         /**
          * Dictates whether touch should be received & consumed
+         *
          * @param ev MotionEvent triggered
          * @return true to consume, false otherwise
          */
