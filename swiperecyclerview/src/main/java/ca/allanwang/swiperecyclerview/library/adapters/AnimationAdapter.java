@@ -1,6 +1,7 @@
 package ca.allanwang.swiperecyclerview.library.adapters;
 
 import android.animation.Animator;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -13,8 +14,10 @@ import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter;
 
 import java.util.List;
 
+import ca.allanwang.swiperecyclerview.library.SwipeRecyclerView;
 import ca.allanwang.swiperecyclerview.library.interfaces.IAdapterAnimator;
 import ca.allanwang.swiperecyclerview.library.interfaces.IItemAnimatorExtension;
+import ca.allanwang.swiperecyclerview.library.logging.RLog;
 import ca.allanwang.swiperecyclerview.library.wasabeef.internal.ViewHelper;
 
 /**
@@ -28,6 +31,7 @@ public class AnimationAdapter<Item extends IItem> extends FastItemAdapter<Item> 
     private int mLastPosition = -1;
     private IAdapterAnimator mAnimator;
     private RecyclerView mRecyclerView;
+    private SwipeRecyclerView mSRV;
 
     private boolean isFirstOnly;
 
@@ -47,6 +51,10 @@ public class AnimationAdapter<Item extends IItem> extends FastItemAdapter<Item> 
         setAnimator(mAnimator);
     }
 
+    public AnimationAdapter<Item> bindSRV(@NonNull SwipeRecyclerView srv) {
+        mSRV = srv;
+        return this;
+    }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
@@ -134,12 +142,43 @@ public class AnimationAdapter<Item extends IItem> extends FastItemAdapter<Item> 
         RecyclerView.ItemAnimator itemAnimator = mRecyclerView.getItemAnimator();
         if (itemAnimator instanceof IItemAnimatorExtension)
             ((IItemAnimatorExtension) itemAnimator).triggerAdd(position == 0, position >= getItemCount(), getItemCount() == 0);
+        if (mSRV != null) mSRV.disableScrolling(); //disable during animations
+
+    }
+
+    private void triggerListener(@NonNull final RecyclerView.ItemAnimator.ItemAnimatorFinishedListener listener) {
+        if (mRecyclerView == null) return;
+        final RecyclerView.ItemAnimator itemAnimator = mRecyclerView.getItemAnimator();
+        if (itemAnimator == null) {
+            listener.onAnimationsFinished();
+            return;
+        }
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                itemAnimator.isRunning(listener);
+            }
+        }, 100);
+    }
+
+    private static final int ADD = 1, REMOVE = 0;
+
+    private RecyclerView.ItemAnimator.ItemAnimatorFinishedListener getAnimFinishedListener(final int key) {
+        return new RecyclerView.ItemAnimator.ItemAnimatorFinishedListener() {
+            @Override
+            public void onAnimationsFinished() {
+                RLog.e("DONE %d", key);
+                if (mSRV != null) mSRV.enableScrolling();
+            }
+        };
     }
 
     @Override
     public AnimationAdapter<Item> add(List<Item> items) {
         trigger(getItemCount());
         super.add(items);
+        triggerListener(getAnimFinishedListener(ADD));
         return this;
     }
 
@@ -147,6 +186,7 @@ public class AnimationAdapter<Item extends IItem> extends FastItemAdapter<Item> 
     public AnimationAdapter<Item> add(Item item) {
         trigger(getItemCount());
         super.add(item);
+        triggerListener(getAnimFinishedListener(ADD));
         return this;
     }
 
@@ -154,6 +194,7 @@ public class AnimationAdapter<Item extends IItem> extends FastItemAdapter<Item> 
     public FastItemAdapter<Item> add(int position, List<Item> items) {
         trigger(position);
         super.add(position, items);
+        triggerListener(getAnimFinishedListener(ADD));
         return this;
     }
 
@@ -161,6 +202,14 @@ public class AnimationAdapter<Item extends IItem> extends FastItemAdapter<Item> 
     public FastItemAdapter<Item> add(int position, Item item) {
         trigger(position);
         super.add(position, item);
+        triggerListener(getAnimFinishedListener(ADD));
+        return this;
+    }
+
+    @Override
+    public FastItemAdapter<Item> clear() {
+        super.clear();
+        triggerListener(getAnimFinishedListener(REMOVE));
         return this;
     }
 }

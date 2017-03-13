@@ -67,7 +67,7 @@ public class HomeFragment extends CapsuleFragment implements ISwipeRecycler.OnRe
         int x = 0;
         List<CheckBoxItem> items = new ArrayList<>();
         for (String s : ALPHABET) {
-            int count = new Random().nextInt(64);
+            int count = new Random().nextInt(32);
             for (int i = 1; i <= count; i++, x++)
                 items.add(new CheckBoxItem().withName(s + " Test " + x).withIdentifier(100 + x));
         }
@@ -88,6 +88,6 @@ public class HomeFragment extends CapsuleFragment implements ISwipeRecycler.OnRe
                 mAdapter.add(generateList());
                 statusEmitter.onSuccess();
             }
-        }, 1000);
+        }, 3000);
     }
 }

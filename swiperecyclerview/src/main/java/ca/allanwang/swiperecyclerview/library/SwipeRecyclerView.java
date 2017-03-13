@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import ca.allanwang.swiperecyclerview.library.adapters.AnimationAdapter;
 import ca.allanwang.swiperecyclerview.library.animators.SlidingAnimator;
 import ca.allanwang.swiperecyclerview.library.interfaces.IScrolling;
 import ca.allanwang.swiperecyclerview.library.interfaces.ISwipeRecycler;
@@ -133,16 +135,13 @@ public class SwipeRecyclerView extends FrameLayout implements SwipeRefreshBase.I
     }
 
     /**
-     * Sets adapter and sets layout manager is not present.
+     * Sets adapter and sets layout manager if not present.
      *
      * @param adapter the adapter
      * @return SRV
      */
     public SwipeRecyclerView setAdapter(RecyclerView.Adapter adapter) {
-        if (mRecycler.getLayoutManager() == null)
-            mRecycler.setLayoutManager(new SLinearLayoutManager(mContext));
-        mRecycler.setAdapter(adapter);
-        return this;
+        return bindAdapterAndLayout(adapter, mRecycler.getLayoutManager() == null ? new SLinearLayoutManager(mContext) : null);
     }
 
     /**
@@ -153,9 +152,14 @@ public class SwipeRecyclerView extends FrameLayout implements SwipeRefreshBase.I
      * @return SRV
      */
     public SwipeRecyclerView setAdapter(RecyclerView.Adapter adapter, int columns) {
-        if (columns == 1) mRecycler.setLayoutManager(new SLinearLayoutManager(mContext));
-        else mRecycler.setLayoutManager(new SGridLayoutManager(mContext, columns));
+        return bindAdapterAndLayout(adapter,
+                columns == 1 ? new SLinearLayoutManager(mContext) : new SGridLayoutManager(mContext, columns));
+    }
+
+    private SwipeRecyclerView bindAdapterAndLayout(final RecyclerView.Adapter adapter, @Nullable final LinearLayoutManager layoutManager) {
+        if (layoutManager != null) mRecycler.setLayoutManager(layoutManager);
         mRecycler.setAdapter(adapter);
+        if (adapter instanceof AnimationAdapter) ((AnimationAdapter) adapter).bindSRV(this);
         return this;
     }
 
