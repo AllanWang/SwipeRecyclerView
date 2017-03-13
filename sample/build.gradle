@@ -35,5 +35,5 @@ dependencies {
     })
     testCompile 'junit:junit:4.12'
     compile project (':swiperecyclerview')
-    compile 'ca.allanwang:capsule:v4.0'
+    compile 'ca.allanwang:capsule:76ed1f355f'
 }

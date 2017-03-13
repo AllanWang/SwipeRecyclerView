@@ -15,28 +15,32 @@ import jp.wasabeef.recyclerview.animators.BaseItemAnimator;
 
 public class SlidingAnimator extends BaseItemAnimator {
 
+    public static final float SLOW = 1.5f, NORMAL = 1.0f, FAST = 0.5f;
+    private float multiplier;
+
     //animate from base; set true if holders are relatively big
     private boolean fromBase = false;
 
     public SlidingAnimator() {
         mInterpolator = new DecelerateInterpolator();
-        setTimings();
+        setTimings(NORMAL);
     }
 
     public SlidingAnimator(Interpolator interpolator) {
         mInterpolator = interpolator;
-        setTimings();
+        setTimings(NORMAL);
     }
 
-    private void setTimings() {
-        setAddDuration(200);
-        setRemoveDuration(200);
+    public void setTimings(float multiplier) {
+        this.multiplier = multiplier;
+        setAddDuration((long) (300 * multiplier));
+        setRemoveDuration((long) (300 * multiplier));
     }
 
     public SlidingAnimator setFromBase(boolean fromBase) {
         if (this.fromBase != fromBase) {
             this.fromBase = fromBase;
-            setAddDuration(fromBase ? 500 : 200);
+            setAddDuration((long) ((fromBase ? 500 : 200) * multiplier));
         }
         return this;
     }
@@ -55,7 +59,7 @@ public class SlidingAnimator extends BaseItemAnimator {
 
     @Override
     protected long getRemoveDelay(final RecyclerView.ViewHolder holder) {
-        return Math.abs(holder.getOldPosition() * getRemoveDuration() * 4);
+        return Math.max(holder.getOldPosition() * getRemoveDuration() * 4, 0);
     }
 
     @Override
