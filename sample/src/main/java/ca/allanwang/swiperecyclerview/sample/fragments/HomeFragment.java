@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IAdapter;
+import com.mikepenz.fastadapter.helpers.ClickListenerHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import ca.allanwang.capsule.library.event.CFabEvent;
 import ca.allanwang.capsule.library.fragments.CapsuleFragment;
 import ca.allanwang.swiperecyclerview.library.SwipeRecyclerView;
 import ca.allanwang.swiperecyclerview.library.adapters.AnimationAdapter;
+import ca.allanwang.swiperecyclerview.library.animators.FadeInAnimator;
 import ca.allanwang.swiperecyclerview.library.animators.SlidingAnimator;
 import ca.allanwang.swiperecyclerview.library.interfaces.ISwipeRecycler;
 import ca.allanwang.swiperecyclerview.sample.R;
@@ -45,6 +47,7 @@ public class HomeFragment extends CapsuleFragment implements ISwipeRecycler.OnRe
         View v = inflater.inflate(R.layout.swipe_recycler_view, container, false);
 
         mAdapter = new AnimationAdapter<>();
+        mAdapter.withSelectable(true);
         mAdapter.withOnPreClickListener(new FastAdapter.OnClickListener<CheckBoxItem>() {
             @Override
             public boolean onClick(View v, IAdapter<CheckBoxItem> adapter, CheckBoxItem item, int position) {
@@ -59,6 +62,7 @@ public class HomeFragment extends CapsuleFragment implements ISwipeRecycler.OnRe
         SwipeRecyclerView.hook(v, R.id.swipe_recycler)
                 .setAdapter(mAdapter)
                 .setOnRefreshListener(this)
+//                .setItemAnimator(new FadeInAnimator());
                 .setItemAnimator(new SlidingAnimator().setFromBase(true));
         return v;
     }

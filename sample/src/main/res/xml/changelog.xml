@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--
+    <version title="v"/>
+    <item text="" />
+    -->
+
+    <version title="v0.2"/>
+    <item text="Fixed CheckboxItem blinking" />
+
+    <version title="v0.1"/>
+    <item text="Initial" />
+    <item text="Added fastadapter support" />
+    <item text="Merge animations" />
+    <item text="Added abstraction templates" />
+    <item text="Added default abstractItems" />
+</resources>
