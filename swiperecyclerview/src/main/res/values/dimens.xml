@@ -1,5 +1,5 @@
 <resources>
     <dimen name="srv_vertical_padding">16dp</dimen>
     <dimen name="srv_primary_text">14sp</dimen>
-
+    <dimen name="srv_primary">48dp</dimen>
 </resources>
