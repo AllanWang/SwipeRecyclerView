@@ -139,5 +139,6 @@
     <orderEntry type="library" exported="" name="iconics-core-2.8.2" level="project" />
     <orderEntry type="module" module-name="swiperecyclerview" exported="" />
     <orderEntry type="library" exported="" name="android-android-25" level="project" />
+    <orderEntry type="library" exported="" name="materialize-1.0.0" level="project" />
   </component>
 </module>

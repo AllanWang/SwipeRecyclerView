@@ -21,7 +21,7 @@ import ca.allanwang.swiperecyclerview.library.adapters.AnimationAdapter;
 import ca.allanwang.swiperecyclerview.library.animators.SlidingAnimator;
 import ca.allanwang.swiperecyclerview.library.interfaces.ISwipeRecycler;
 import ca.allanwang.swiperecyclerview.sample.R;
-import ca.allanwang.swiperecyclerview.sample.items.CheckBoxItem;
+import ca.allanwang.swiperecyclerview.library.items.CheckBoxItem;
 
 /**
  * Created by Allan Wang on 2017-02-24.

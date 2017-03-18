@@ -1,4 +1,4 @@
-package ca.allanwang.swiperecyclerview.sample.items;
+package ca.allanwang.swiperecyclerview.library.items;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -15,7 +15,7 @@ import com.mikepenz.materialize.holder.StringHolder;
 
 import java.util.List;
 
-import ca.allanwang.swiperecyclerview.sample.R;
+import ca.allanwang.swiperecyclerview.library.R;
 
 /**
  * Created by Allan Wang on 2017-02-24.
@@ -54,40 +54,21 @@ public class CheckBoxItem extends AbstractItem<CheckBoxItem, CheckBoxItem.ViewHo
         return this;
     }
 
-    /**
-     * defines the type defining this item. must be unique. preferably an id
-     *
-     * @return the type
-     */
     @Override
     public int getType() {
-        return R.id.fastadapter_checkbox_item_id;
+        return R.id.checkbox;
     }
 
-    /**
-     * defines the layout which will be used for this item in the list
-     *
-     * @return the layout for this item
-     */
     @Override
     public int getLayoutRes() {
-        return R.layout.checkbox_item;
+        return R.layout.fastitem_checkbox;
     }
 
-    /**
-     * binds the data of this item onto the viewHolder
-     *
-     * @param viewHolder the viewHolder of this item
-     */
     @Override
     public void bindView(ViewHolder viewHolder, List<Object> payloads) {
         super.bindView(viewHolder, payloads);
-
         viewHolder.checkBox.setChecked(isSelected());
-
-        //set the text for the name
         StringHolder.applyTo(name, viewHolder.name);
-        //set the text for the description or hide
         StringHolder.applyToOrHide(description, viewHolder.description);
     }
 
@@ -152,4 +133,5 @@ public class CheckBoxItem extends AbstractItem<CheckBoxItem, CheckBoxItem.ViewHo
             fastAdapter.toggleSelection(position);
         }
     }
+
 }
