@@ -1,5 +1,7 @@
 package ca.allanwang.swiperecyclerview.library.items;
 
+import android.support.annotation.ColorRes;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -38,6 +40,14 @@ public class PairItem extends AbstractItem<PairItem, PairItem.ViewHolder> {
         super.bindView(viewHolder, payloads);
         viewHolder.left.setText(left);
         viewHolder.right.setText(right);
+        int color = viewHolder.getAdapterPosition() % 2 == 0 ? 0x00000000 : ContextCompat.getColor(viewHolder.itemView.getContext(), getShader());
+        viewHolder.itemView.setBackgroundColor(color);
+    }
+
+    protected
+    @ColorRes
+    int getShader() {
+        return R.color.transparent_black;
     }
 
     @Override

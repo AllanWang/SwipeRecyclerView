@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">SwipeRecyclerView</string>
     <string name="home">Home</string>
+    <string name="pair">Pairs</string>
 </resources>

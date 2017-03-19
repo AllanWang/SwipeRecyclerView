@@ -2,15 +2,14 @@ package ca.allanwang.swiperecyclerview.sample;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 
 import ca.allanwang.capsule.library.activities.CapsuleActivityFrame;
 import ca.allanwang.capsule.library.interfaces.CDrawerItem;
-import ca.allanwang.capsule.library.item.DrawerItem;
 import ca.allanwang.swiperecyclerview.sample.fragments.HomeFragment;
+import ca.allanwang.swiperecyclerview.sample.fragments.PairFragment;
 
 /**
  * Created by Allan Wang on 2017-02-06.
@@ -33,14 +32,9 @@ public class MainActivity extends CapsuleActivityFrame {
 
     @Override
     protected CDrawerItem[] getDrawerItems() {
-        return new CDrawerItem[]{
-                new DrawerItem(R.string.home, GoogleMaterial.Icon.gmd_dashboard, true) {
-                    @Nullable
-                    @Override
-                    public Fragment getFragment() {
-                        return new HomeFragment();
-                    }
-                }
-        };
+        return generateDrawerItems(
+                new ShortCDrawerItem(R.string.home, GoogleMaterial.Icon.gmd_dashboard, new HomeFragment()),
+                new ShortCDrawerItem(R.string.pair, GoogleMaterial.Icon.gmd_format_paint, new PairFragment())
+        );
     }
 }

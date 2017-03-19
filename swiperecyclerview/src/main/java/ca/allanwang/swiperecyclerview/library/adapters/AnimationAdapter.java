@@ -17,7 +17,6 @@ import java.util.List;
 import ca.allanwang.swiperecyclerview.library.SwipeRecyclerView;
 import ca.allanwang.swiperecyclerview.library.interfaces.IAdapterAnimator;
 import ca.allanwang.swiperecyclerview.library.interfaces.IItemAnimatorExtension;
-import ca.allanwang.swiperecyclerview.library.logging.RLog;
 import ca.allanwang.swiperecyclerview.library.wasabeef.internal.ViewHelper;
 
 /**
@@ -173,7 +172,6 @@ public class AnimationAdapter<Item extends IItem> extends FastItemAdapter<Item> 
         return new RecyclerView.ItemAnimator.ItemAnimatorFinishedListener() {
             @Override
             public void onAnimationsFinished() {
-                RLog.e("DONE %d", key);
                 if (mSRV != null) mSRV.enableScrolling();
             }
         };

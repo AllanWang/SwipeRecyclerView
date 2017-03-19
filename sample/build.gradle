@@ -5,7 +5,7 @@ android {
     buildToolsVersion project.buildTools
 
     defaultConfig {
-        applicationId "ca.allanwang.fastrecyclerview"
+        applicationId "ca.allanwang.fastrecyclerview.sample"
         minSdkVersion 17
         targetSdkVersion project.targetSdk
         versionCode project.versionCode
@@ -34,6 +34,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile 'junit:junit:4.12'
-    compile project (':swiperecyclerview')
-    compile 'ca.allanwang:capsule:76ed1f355f'
+    compile('ca.allanwang:capsule:7592d646a1') {
+        exclude group: 'ca.allanwang.swiperecyclerview.library'
+    }
+    compile project(':swiperecyclerview')
 }

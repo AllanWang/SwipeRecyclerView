@@ -7,7 +7,6 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 
 import ca.allanwang.swiperecyclerview.library.interfaces.IItemAnimatorExtension;
-import ca.allanwang.swiperecyclerview.library.logging.RLog;
 import ca.allanwang.swiperecyclerview.library.wasabeef.animators.BaseItemAnimator;
 
 
@@ -118,7 +117,6 @@ public class SlidingAnimator extends BaseItemAnimator implements IItemAnimatorEx
 
     @Override
     public void triggerAdd(boolean toTop, boolean toBottom, boolean isEmpty) {
-        RLog.e("trigger");
         setFromBase(null, toBottom);
     }
 }
