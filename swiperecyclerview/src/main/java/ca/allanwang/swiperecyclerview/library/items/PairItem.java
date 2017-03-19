@@ -40,8 +40,8 @@ public class PairItem extends AbstractItem<PairItem, PairItem.ViewHolder> {
         super.bindView(viewHolder, payloads);
         viewHolder.left.setText(left);
         viewHolder.right.setText(right);
-        int color = viewHolder.getAdapterPosition() % 2 == 0 ? 0x00000000 : ContextCompat.getColor(viewHolder.itemView.getContext(), getShader());
-        viewHolder.itemView.setBackgroundColor(color);
+        if (viewHolder.getAdapterPosition() % 2 == 0)
+            viewHolder.itemView.setBackgroundColor(ContextCompat.getColor(viewHolder.itemView.getContext(), getShader()));
     }
 
     protected
@@ -55,6 +55,7 @@ public class PairItem extends AbstractItem<PairItem, PairItem.ViewHolder> {
         super.unbindView(holder);
         holder.left.setText(null);
         holder.right.setText(null);
+        holder.itemView.setBackgroundColor(0x00000000);
     }
 
     public ViewHolderFactory<? extends PairItem.ViewHolder> getFactory() {
