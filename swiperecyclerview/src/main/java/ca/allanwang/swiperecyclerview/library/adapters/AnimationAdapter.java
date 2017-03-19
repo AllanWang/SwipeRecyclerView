@@ -75,7 +75,7 @@ public class AnimationAdapter<Item extends IItem> extends FastItemAdapter<Item> 
         } else {
             ViewHelper.clear(holder.itemView);
         }
-        if (mPostBindVH != null) mPostBindVH.postOnBindViewHolder(holder, position);
+        if (mPostBindVH != null) mPostBindVH.postOnBindViewHolder(holder, adapterPosition);
     }
 
     /**
