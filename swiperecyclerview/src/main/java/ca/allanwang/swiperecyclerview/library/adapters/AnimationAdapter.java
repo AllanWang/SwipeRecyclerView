@@ -32,6 +32,7 @@ public class AnimationAdapter<Item extends IItem> extends FastItemAdapter<Item> 
     private IAdapterAnimator mAnimator;
     private RecyclerView mRecyclerView;
     private SwipeRecyclerView mSRV;
+    private PostBindViewHolder mPostBindVH;
 
     private boolean isFirstOnly;
 
@@ -56,6 +57,10 @@ public class AnimationAdapter<Item extends IItem> extends FastItemAdapter<Item> 
         return this;
     }
 
+    public interface PostBindViewHolder {
+        void postOnBindViewHolder(RecyclerView.ViewHolder holder, int position);
+    }
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
@@ -70,25 +75,42 @@ public class AnimationAdapter<Item extends IItem> extends FastItemAdapter<Item> 
         } else {
             ViewHelper.clear(holder.itemView);
         }
+        if (mPostBindVH != null) mPostBindVH.postOnBindViewHolder(holder, position);
     }
 
-    public void setDuration(int duration) {
+    /**
+     * Add further content after viewholder is bound
+     * position is defined at this point
+     *
+     * @param listener to be called after {@link #onBindViewHolder(RecyclerView.ViewHolder, int)}
+     * @return this
+     */
+    public AnimationAdapter<Item> setPostBindViewHolderListener(PostBindViewHolder listener) {
+        mPostBindVH = listener;
+        return this;
+    }
+
+    public AnimationAdapter<Item> setDuration(int duration) {
         mDuration = duration;
+        return this;
     }
 
-    public void setInterpolator(Interpolator interpolator) {
+    public AnimationAdapter<Item> setInterpolator(Interpolator interpolator) {
         mInterpolator = interpolator;
+        return this;
     }
 
-    public void setStartPosition(int start) {
+    public AnimationAdapter<Item> setStartPosition(int start) {
         mLastPosition = start;
+        return this;
     }
 
-    public void setFirstOnly(boolean firstOnly) {
+    public AnimationAdapter<Item> setFirstOnly(boolean firstOnly) {
         isFirstOnly = firstOnly;
+        return this;
     }
 
-    public void setAnimator(@Nullable IAdapterAnimator animator) {
+    public AnimationAdapter<Item> setAnimator(@Nullable IAdapterAnimator animator) {
         mAnimator = animator;
         if (mAnimator == null) {
             //set default animations (none)
@@ -119,6 +141,7 @@ public class AnimationAdapter<Item extends IItem> extends FastItemAdapter<Item> 
         isFirstOnly = mAnimator.isFirstOnly();
         mDuration = mAnimator.getDuration();
         mInterpolator = mAnimator.getInterpolator();
+        return this;
     }
 
     @Override
