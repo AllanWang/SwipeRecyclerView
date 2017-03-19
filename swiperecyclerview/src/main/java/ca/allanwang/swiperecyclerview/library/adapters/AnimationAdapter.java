@@ -32,7 +32,6 @@ public class AnimationAdapter<Item extends IItem> extends FastItemAdapter<Item> 
     private IAdapterAnimator mAnimator;
     private RecyclerView mRecyclerView;
     private SwipeRecyclerView mSRV;
-    private PostBindViewHolder mPostBindVH;
 
     private boolean isFirstOnly;
 
@@ -57,10 +56,6 @@ public class AnimationAdapter<Item extends IItem> extends FastItemAdapter<Item> 
         return this;
     }
 
-    public interface PostBindViewHolder {
-        void postOnBindViewHolder(RecyclerView.ViewHolder holder, int position);
-    }
-
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
@@ -75,19 +70,6 @@ public class AnimationAdapter<Item extends IItem> extends FastItemAdapter<Item> 
         } else {
             ViewHelper.clear(holder.itemView);
         }
-        if (mPostBindVH != null) mPostBindVH.postOnBindViewHolder(holder, adapterPosition);
-    }
-
-    /**
-     * Add further content after viewholder is bound
-     * position is defined at this point
-     *
-     * @param listener to be called after {@link #onBindViewHolder(RecyclerView.ViewHolder, int)}
-     * @return this
-     */
-    public AnimationAdapter<Item> setPostBindViewHolderListener(PostBindViewHolder listener) {
-        mPostBindVH = listener;
-        return this;
     }
 
     public AnimationAdapter<Item> setDuration(int duration) {
