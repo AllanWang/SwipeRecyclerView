@@ -24,7 +24,7 @@ project.ext {
     minSdk = 14
     targetSdk = 25
     buildTools = "25.0.2"
-    androidSupportLibs = "25.2.0"
+    androidSupportLibs = "25.3.0"
     versionCode = 1
     versionName = "0.1"
 }
