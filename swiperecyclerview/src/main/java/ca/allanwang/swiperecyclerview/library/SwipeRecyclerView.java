@@ -241,9 +241,10 @@ public class SwipeRecyclerView extends FrameLayout implements SwipeRefreshBase.I
     /**
      * Variant of refresh where the view is updated without animations and the refresh indicator
      */
-    public void setSilentRefreshListener(@Nullable SilentRefreshListener listener) {
+    public SwipeRecyclerView setSilentRefreshListener(@Nullable SilentRefreshListener listener) {
         if (listener != null) mSilentRefreshListener = listener;
         else mSilentRefreshListener = getDefaultSilentRefreshListener();
+        return this;
     }
 
     @Override
