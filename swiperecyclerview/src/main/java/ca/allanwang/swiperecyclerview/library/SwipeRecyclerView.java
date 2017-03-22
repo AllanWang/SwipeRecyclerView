@@ -216,6 +216,21 @@ public class SwipeRecyclerView extends FrameLayout implements SwipeRefreshBase.I
         return this;
     }
 
+    /**
+     * Variant of refresh where the view is updated without animations and the refresh indicator
+     */
+    public SwipeRecyclerView refreshSilently() {
+        onSilentRefresh();
+        return this;
+    }
+
+    /**
+     * Variant of refresh where the view is updated without animations and the refresh indicator
+     */
+    public void onSilentRefresh() {
+        onRefresh();
+    }
+
     @Override
     public boolean shouldConsumeTouch(MotionEvent ev) {
         return !mRecycler.canScrollVertically(-1);
