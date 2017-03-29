@@ -1,6 +1,6 @@
 # SwipeRecyclerView
 
-<!--Current Release 0.1-->
+<!--Current Release 0.2-->
 
 * Integrates [FastAdapter](https://github.com/mikepenz/FastAdapter) by Mike Penz
 * Integrates [RecyclerView Animations](https://github.com/wasabeef/recyclerview-animators) by Wasabeef with more prebuilt animators
@@ -30,9 +30,11 @@ And add the following dependencies (You can use a specific version, commit, or -
 
 ```gradle
 dependencies {
-        compile 'ca.allanwang:swiperecyclerview:v0.1'
+        compile 'ca.allanwang:swiperecyclerview:v0.2'
 }
 
 ```
 
-[SwipeRecyclerView Javadocs v0.1](https://jitpack.io/ca/allanwang/swiperecyclerview/v0.1/javadoc/)
+[SwipeRecyclerView Javadocs v0.2](https://jitpack.io/ca/allanwang/swiperecyclerview/v0.2/javadoc/)
+
+[Full Changelog](https://github.com/AllanWang/SwipeRecyclerView/blob/master/sample/src/main/res/xml/changelog.xml)
