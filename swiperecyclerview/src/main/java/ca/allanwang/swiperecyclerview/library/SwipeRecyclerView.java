@@ -35,6 +35,7 @@ public class SwipeRecyclerView extends FrameLayout implements SwipeRefreshBase.I
 
     private ISwipeRecycler.OnRefreshListener mRefreshListener;
     private ISwipeRecycler.OnRefreshStatus mRefreshStatus = getDefaultRefreshStatus();
+    private SilentRefreshListener mSilentRefreshListener = getDefaultSilentRefreshListener();
 
     /**
      * Generate default refresh callbacks
@@ -213,6 +214,36 @@ public class SwipeRecyclerView extends FrameLayout implements SwipeRefreshBase.I
     public SwipeRecyclerView refresh() {
         mSwipe.setRefreshing(true);
         onRefresh();
+        return this;
+    }
+
+    /**
+     * Variant of refresh where the view is updated without animations and the refresh indicator
+     */
+    public SwipeRecyclerView refreshSilently() {
+        mSilentRefreshListener.onSilentRefresh();
+        return this;
+    }
+
+    public interface SilentRefreshListener {
+        void onSilentRefresh();
+    }
+
+    public SilentRefreshListener getDefaultSilentRefreshListener() {
+        return new SilentRefreshListener() {
+            @Override
+            public void onSilentRefresh() {
+                onRefresh();
+            }
+        };
+    }
+
+    /**
+     * Variant of refresh where the view is updated without animations and the refresh indicator
+     */
+    public SwipeRecyclerView setSilentRefreshListener(@Nullable SilentRefreshListener listener) {
+        if (listener != null) mSilentRefreshListener = listener;
+        else mSilentRefreshListener = getDefaultSilentRefreshListener();
         return this;
     }
 

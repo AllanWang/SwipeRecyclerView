@@ -9,6 +9,8 @@
     <version title="v0.2"/>
     <item text="Fixed CheckboxItem blinking" />
     <item text="Added PairItems template" />
+    <item text="Add silent refresh listener" />
+    <item text="Update dependencies" />
 
     <version title="v0.1"/>
     <item text="Initial" />
