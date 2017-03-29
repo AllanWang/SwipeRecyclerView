@@ -28,11 +28,11 @@ public class PairItem extends AbstractItem<PairItem, PairItem.ViewHolder> {
     }
 
     public int getType() {
-        return R.id.fastadapter_pair_item_id;
+        return R.id.srv_fastadapter_pair_item_id;
     }
 
     public int getLayoutRes() {
-        return R.layout.fastitem_pair;
+        return R.layout.srv_fastitem_pair;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class PairItem extends AbstractItem<PairItem, PairItem.ViewHolder> {
     protected
     @ColorRes
     int getShader() {
-        return R.color.transparent_black;
+        return R.color.srv_transparent_black;
     }
 
     @Override

@@ -8,7 +8,7 @@ android {
         applicationId "ca.allanwang.fastrecyclerview.sample"
         minSdkVersion 17
         targetSdkVersion Integer.parseInt(project.TARGET_SDK)
-        versionCode project.VERSION_CODE
+        versionCode Integer.parseInt(project.VERSION_CODE)
         versionName project.VERSION_NAME
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

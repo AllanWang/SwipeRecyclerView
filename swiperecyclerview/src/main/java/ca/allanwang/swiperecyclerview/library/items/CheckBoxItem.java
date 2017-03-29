@@ -56,12 +56,12 @@ public class CheckBoxItem extends AbstractItem<CheckBoxItem, CheckBoxItem.ViewHo
 
     @Override
     public int getType() {
-        return R.id.fastadapter_checkbox_item_id;
+        return R.id.srv_fastadapter_checkbox_item_id;
     }
 
     @Override
     public int getLayoutRes() {
-        return R.layout.fastitem_checkbox;
+        return R.layout.srv_fastitem_checkbox;
     }
 
     @Override
