@@ -19,15 +19,7 @@ allprojects {
     }
 }
 
-project.ext {
-    appTag = "SwipeRecyclerView"
-    minSdk = 14
-    targetSdk = 25
-    buildTools = "25.0.2"
-    androidSupportLibs = "25.2.0"
-    versionCode = 1
-    versionName = "0.1"
-}
+project.ext.VERSION_CODE = Integer.parseInt(VERSION_NAME.replace(".", "")) // play it safe; avoid suffixes
 
 task clean(type: Delete) {
     delete rootProject.buildDir

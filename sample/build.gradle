@@ -1,22 +1,22 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion project.targetSdk
-    buildToolsVersion project.buildTools
+    compileSdkVersion Integer.parseInt(project.TARGET_SDK)
+    buildToolsVersion project.BUILD_TOOLS
 
     defaultConfig {
         applicationId "ca.allanwang.fastrecyclerview.sample"
         minSdkVersion 17
-        targetSdkVersion project.targetSdk
-        versionCode project.versionCode
-        versionName project.versionName
+        targetSdkVersion Integer.parseInt(project.TARGET_SDK)
+        versionCode project.VERSION_CODE
+        versionName project.VERSION_NAME
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             output.outputFile = new File(output.outputFile.parent,
-                    "${project.appTag}Sample-v${variant.versionName}.apk")
+                    "${project.APP_TAG}Sample-v${variant.versionName}.apk")
         }
     }
 
