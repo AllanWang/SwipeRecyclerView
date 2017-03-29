@@ -37,4 +37,4 @@ dependencies {
 
 [SwipeRecyclerView Javadocs v0.2](https://jitpack.io/ca/allanwang/swiperecyclerview/v0.2/javadoc/)
 
-[Full Changelog](https://github.com/AllanWang/SwipeRecyclerView/blob/master/sample/src/main/res/xml/changelog.xml)
+[Full Changelog](https://github.com/AllanWang/SwipeRecyclerView/blob/master/docs/Changelog.md)
