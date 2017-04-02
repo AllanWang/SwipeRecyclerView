@@ -158,22 +158,14 @@ public class AnimationAdapter<Item extends IItem> extends FastItemAdapter<Item> 
             return;
         }
         final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                itemAnimator.isRunning(listener);
-            }
-        }, 100);
+        handler.postDelayed(() -> itemAnimator.isRunning(listener), 100);
     }
 
     private static final int ADD = 1, REMOVE = 0;
 
     private RecyclerView.ItemAnimator.ItemAnimatorFinishedListener getAnimFinishedListener(final int key) {
-        return new RecyclerView.ItemAnimator.ItemAnimatorFinishedListener() {
-            @Override
-            public void onAnimationsFinished() {
-                if (mSRV != null) mSRV.enableScrolling();
-            }
+        return () -> {
+            if (mSRV != null) mSRV.enableScrolling();
         };
     }
 

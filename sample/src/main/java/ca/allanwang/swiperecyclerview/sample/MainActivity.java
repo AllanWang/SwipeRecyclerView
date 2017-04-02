@@ -8,6 +8,7 @@ import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 
 import ca.allanwang.capsule.library.activities.CapsuleActivityFrame;
 import ca.allanwang.capsule.library.interfaces.CDrawerItem;
+import ca.allanwang.capsule.library.item.DrawerItem;
 import ca.allanwang.swiperecyclerview.sample.fragments.HomeFragment;
 import ca.allanwang.swiperecyclerview.sample.fragments.PairFragment;
 
@@ -32,9 +33,9 @@ public class MainActivity extends CapsuleActivityFrame {
 
     @Override
     protected CDrawerItem[] getDrawerItems() {
-        return generateDrawerItems(
-                new ShortCDrawerItem(R.string.home, GoogleMaterial.Icon.gmd_dashboard, new HomeFragment()),
-                new ShortCDrawerItem(R.string.pair, GoogleMaterial.Icon.gmd_format_paint, new PairFragment())
-        );
+        return new CDrawerItem[]{
+                new DrawerItem(R.string.home, GoogleMaterial.Icon.gmd_dashboard, true, HomeFragment::new),
+                new DrawerItem(R.string.pair, GoogleMaterial.Icon.gmd_format_paint, true, PairFragment::new)
+        };
     }
 }

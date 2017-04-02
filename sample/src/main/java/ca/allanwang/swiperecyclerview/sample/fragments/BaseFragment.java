@@ -39,12 +39,9 @@ public abstract class BaseFragment<I extends IItem> extends CapsuleSRVFragment<I
     @Override
     public void onRefresh(final ISwipeRecycler.OnRefreshStatus statusEmitter) {
         mAdapter.clear();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mAdapter.add(generateList());
-                statusEmitter.onSuccess();
-            }
+        new Handler().postDelayed(() -> {
+            mAdapter.add(generateList());
+            statusEmitter.onSuccess();
         }, 1000);
     }
 }
